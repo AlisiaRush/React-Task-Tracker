@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Header from './components/Header';
 import Tasks from './components/Tasks';
 import AddTask from './components/AddTask';
+import Footer from './components/Footer';
+import About from './components/About';
 
 function App(
 
@@ -18,7 +21,6 @@ function App(
     getTasks();
 
   }, []);
-
 
   //Fetch Taskss
   const fetchTasks = async() =>{
@@ -81,15 +83,26 @@ task.id === id ? {...task,reminder:
 data.reminder}: task))
 }
   return (
-    <div className="container">
-{showAddTask && <AddTask onAdd={addTasks}/>}
+    <Router>
+<div className="container">
+
+<Route path="/" exact render={(props) =>(
+  <>
+  {showAddTask && <AddTask onAdd={addTasks}/>}
+
 <Header onAdd={()=> setShowAddTask(!showAddTask)} showAdd={showAddTask}/>
 {tasks.length > 0 ?<Tasks tasks={tasks} 
 onDelete={deleteTasks}
 onToggle={toggleReminder}
 /> : 'There are no tasks!'}
+  </>
+)} />
+<Route path="/about" component={About} />
+<Footer />
     </div>
+    </Router>
   );
 }
+
 
 export default App;
